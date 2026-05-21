@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Subscription Guard — 無料トライアルの番人</title>
+  <meta name="description" content="無料トライアルの解約忘れを防ぐiOSアプリ。終了前日に通知して、うっかり課金を防止。Netflix・Spotify・iCloud など25種類以上のサービスに対応。">
+  <meta name="keywords" content="無料トライアル,解約忘れ,課金防止,サブスク,自動更新,定期課金,解約,通知,リマインド">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Subscription Guard — 無料トライアルの番人">
+  <meta property="og:description" content="無料トライアルの解約忘れを防ぐiOSアプリ。終了前日に通知して、うっかり課金を防止。">
+  <meta property="og:url" content="https://yosinn1-blip.github.io/subscription-guard/">
+  <meta property="og:image" content="https://yosinn1-blip.github.io/subscription-guard/ogp.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Subscription Guard — 無料トライアルの番人">
+  <meta name="twitter:description" content="無料トライアルの解約忘れを防ぐiOSアプリ。終了前日に通知。">
+  <link rel="canonical" href="https://yosinn1-blip.github.io/subscription-guard/">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Subscription Guard",
+    "description": "無料トライアルの解約忘れを防ぐiOSアプリ。終了前日に通知して、うっかり課金を防止します。",
+    "applicationCategory": "UtilitiesApplication",
+    "operatingSystem": "iOS",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "JPY"
+    },
+    "url": "https://yosinn1-blip.github.io/subscription-guard/"
+  }
+  </script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, sans-serif; background: #F5F5F0; color: #1a1a1a; }
+
+    header {
+      background: #5C8A6E;
+      color: white;
+      text-align: center;
+      padding: 64px 20px 48px;
+    }
+    .icon {
+      width: 96px; height: 96px;
+      background: rgba(255,255,255,0.15);
+      border-radius: 22px;
+      margin: 0 auto 24px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 48px;
+    }
+    header h1 { font-size: 28px; font-weight: 700; margin-bottom: 8px; }
+    header p { font-size: 16px; opacity: 0.85; }
+
+    .badge {
+      text-align: center;
+      padding: 32px 20px;
+    }
+    .badge a {
+      display: inline-block;
+      background: #000;
+      color: #fff;
+      text-decoration: none;
+      padding: 12px 28px;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    .features {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 0 20px 48px;
+      display: grid;
+      gap: 16px;
+    }
+    .feature {
+      background: white;
+      border-radius: 14px;
+      padding: 20px;
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+    }
+    .feature-icon { font-size: 28px; flex-shrink: 0; }
+    .feature h3 { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
+    .feature p { font-size: 14px; color: #555; line-height: 1.6; }
+
+    .tagline {
+      text-align: center;
+      padding: 32px 20px;
+      font-size: 18px;
+      font-weight: 600;
+      color: #5C8A6E;
+    }
+
+    footer {
+      text-align: center;
+      padding: 24px 20px;
+      font-size: 13px;
+      color: #999;
+      border-top: 1px solid #E0E0E0;
+    }
+    footer a { color: #5C8A6E; text-decoration: none; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="icon">🛡️</div>
+    <h1>Subscription Guard</h1>
+    <p>無料トライアルの番人</p>
+  </header>
+
+  <div class="badge">
+    <a href="#">App Store でダウンロード</a>
+  </div>
+
+  <p class="tagline">登録したら忘れがち。<br>課金される前に解約する、それだけのアプリ。</p>
+
+  <div class="features">
+    <div class="feature">
+      <div class="feature-icon">⏰</div>
+      <div>
+        <h3>終了前日に通知</h3>
+        <p>トライアル終了日の前日、朝9時に通知が届きます。解約するか続けるか、その場で判断できます。</p>
+      </div>
+    </div>
+    <div class="feature">
+      <div class="feature-icon">⚡️</div>
+      <div>
+        <h3>3ステップで登録完了</h3>
+        <p>サービスを選んで、プランを確認して、終了日をセット。ウィザード形式で迷わず登録できます。</p>
+      </div>
+    </div>
+    <div class="feature">
+      <div class="feature-icon">🔒</div>
+      <div>
+        <h3>データはデバイス内のみ</h3>
+        <p>外部サーバーへの送信は一切なし。登録した情報はすべて自分のiPhoneの中だけに保存されます。</p>
+      </div>
+    </div>
+    <div class="feature">
+      <div class="feature-icon">🎯</div>
+      <div>
+        <h3>機能を絞っています</h3>
+        <p>管理画面なし、グラフなし、支払い合計なし。「うっかり課金を防ぐ」ことだけに特化したアプリです。</p>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <a href="privacy.html">プライバシーポリシー</a>
+  </footer>
+</body>
+</html>
