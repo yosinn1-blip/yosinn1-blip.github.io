@@ -6,13 +6,13 @@
   <title>Yoshiki – Software Projects</title>
   <style>
     :root {
-      --bg:       #0d1117;
-      --surface:  #161b22;
-      --border:   #484f58;
-      --text:     #e6edf3;
-      --muted:    #8b949e;
-      --accent:   #58a6ff;
-      --tag-bg:   #21262d;
+      --bg:       #f0f4f8;
+      --surface:  #ffffff;
+      --border:   #d0d7de;
+      --text:     #1f2328;
+      --muted:    #656d76;
+      --accent:   #0969da;
+      --tag-bg:   #dbeafe;
       --radius:   8px;
     }
 
@@ -82,18 +82,17 @@
     .card {
       background: var(--surface);
       border: 1px solid var(--border);
-      border-top: 2px solid var(--accent);
       border-radius: var(--radius);
       padding: 24px;
       display: flex;
       flex-direction: column;
       gap: 12px;
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
       transition: border-color 0.15s, box-shadow 0.15s, transform 0.15s;
     }
     .card:hover {
       border-color: var(--accent);
-      box-shadow: 0 6px 24px rgba(88, 166, 255, 0.12);
+      box-shadow: 0 6px 24px rgba(9, 105, 218, 0.15);
       transform: translateY(-2px);
     }
 
