@@ -8,7 +8,7 @@
     :root {
       --bg:       #0d1117;
       --surface:  #161b22;
-      --border:   #30363d;
+      --border:   #484f58;
       --text:     #e6edf3;
       --muted:    #8b949e;
       --accent:   #58a6ff;
@@ -82,14 +82,20 @@
     .card {
       background: var(--surface);
       border: 1px solid var(--border);
+      border-top: 2px solid var(--accent);
       border-radius: var(--radius);
       padding: 24px;
       display: flex;
       flex-direction: column;
       gap: 12px;
-      transition: border-color 0.15s;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+      transition: border-color 0.15s, box-shadow 0.15s, transform 0.15s;
     }
-    .card:hover { border-color: var(--accent); }
+    .card:hover {
+      border-color: var(--accent);
+      box-shadow: 0 6px 24px rgba(88, 166, 255, 0.12);
+      transform: translateY(-2px);
+    }
 
     .card h2 {
       font-size: 1.125rem;
