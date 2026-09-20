@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="data:,">
+  <title>AI駆動開発のケーススタディ – Yoshiki</title>
+  <style>
+    :root { --bg:#f0f4f8; --surface:#fff; --border:#d0d7de; --text:#1f2328; --muted:#656d76; --accent:#0969da; }
+    * { box-sizing:border-box; }
+    body { margin:0; background:var(--bg); color:var(--text); font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif; line-height:1.75; }
+    main { width:min(860px,calc(100% - 32px)); margin:40px auto; }
+    header, section { background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:24px; margin-bottom:16px; }
+    h1 { margin:0 0 8px; font-size:clamp(1.6rem,4vw,2.1rem); }
+    h2 { margin:0 0 8px; font-size:1.25rem; }
+    p, li { font-size:.95rem; }
+    .lead { color:var(--muted); margin:0; }
+    a { color:var(--accent); }
+    a:focus { outline:2px solid var(--accent); outline-offset:2px; }
+    .back { display:inline-block; margin-bottom:16px; }
+    @media (max-width:520px) { main { margin:20px auto; } header, section { padding:18px; } h1 { font-size:1.3rem; } }
+  </style>
+</head>
+<body>
+<main>
+  <a class="back" href="index.html">← ポートフォリオへ戻る</a>
+  <header>
+    <h1>AI駆動開発のケーススタディ</h1>
+    <p class="lead">AIを使った開発と、人による検証・最終判断の分担を説明します。</p>
+  </header>
+
+  <section>
+    <h2>基本の進め方</h2>
+    <ol>
+      <li>自分の困り事と完成条件を文章にする</li>
+      <li>Codex等のAIへ調査、実装、比較、テスト案の作成を依頼する</li>
+      <li>生成されたコードや説明を理解し、元資料、自動テスト、ログ、実画面で確認する</li>
+      <li>違いがあれば再現条件と期待する結果を整理して修正を依頼する</li>
+      <li>修正後に対象テストと実利用の流れを再確認する</li>
+      <li>確認できない内容は、推測で正しいとせず未確認として残す</li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>AI Voice Input</h2>
+    <ul>
+      <li><strong>課題:</strong> 既存の音声入力アプリの無料枠と操作方法が、自分のAIチャット利用に合わなかった</li>
+      <li><strong>AIに依頼:</strong> Swift実装の下書き、エラー原因の切り分け、テスト観点の提案、READMEの整理</li>
+      <li><strong>自分が確認:</strong> キー操作、認識結果、入力欄への貼り付け、Enter送信、権限設定、パッケージ内容</li>
+      <li><strong>修正例:</strong> 録音停止直前の音声が欠ける条件を整理し、停止処理と表示を修正した後、自動テストと署名済みアプリの再インストールまで確認。押下タイミング別の実発話聴取は未確認として残した</li>
+    </ul>
+    <p><a href="https://github.com/yosinn1-blip/api-voice-input">公開リポジトリを見る</a></p>
+  </section>
+
+  <section>
+    <h2>Sakura Score Viewer</h2>
+    <ul>
+      <li><strong>課題:</strong> Amazonの商品ページから第三者の参考スコアを見るたびに別サイトへ移動する手間があった</li>
+      <li><strong>AIに依頼:</strong> Chrome拡張の構成、商品IDを取得する処理、表示処理の下書き</li>
+      <li><strong>自分が確認:</strong> 表示場所、商品ID、取得失敗時の挙動、スコアが購入判断の補助情報であること</li>
+      <li><strong>学び:</strong> 関連する試作でAPI費用が想定以上に増えたため、利用量制御、キャッシュ、監視、停止条件を先に設計する重要性を学んだ</li>
+    </ul>
+    <p><a href="https://github.com/yosinn1-blip/sakura-score-viewer">公開リポジトリを見る</a></p>
+  </section>
+
+  <section>
+    <h2>Amazon購入ガード</h2>
+    <ul>
+      <li><strong>課題:</strong> Amazonの商品・購入画面で不要な誘導と誤操作を減らし、必要な情報を確認しやすくしたかった</li>
+      <li><strong>AIに依頼:</strong> 表示要素の調査、Chrome拡張の実装案、自動テストの作成と修正候補の提示</li>
+      <li><strong>自分が確認:</strong> 実際の購入導線、必要な情報が消えていないこと、非表示後の空白、機能ごとのON/OFF</li>
+    </ul>
+    <p><a href="https://chromewebstore.google.com/detail/amazon%E8%B3%BC%E5%85%A5%E3%82%AC%E3%83%BC%E3%83%89/hgghdgogjbdapbaackkenneofjcnliec">Chromeウェブストアを見る</a></p>
+  </section>
+
+  <section>
+    <h2>情報管理</h2>
+    <ul>
+      <li>顧客情報、個人情報、認証情報、APIキー、未公開コードは、会社の許可なく外部AIへ入力しない</li>
+      <li>AIサービスと入力可能な情報は会社の規程に従う</li>
+      <li>APIキーはコードや文書へ書かず、環境変数やOSの安全な保存機能で管理する</li>
+      <li>複数AIの回答が一致しても、一次資料や実動作で確認できなければ未確認として扱う</li>
+    </ul>
+  </section>
+</main>
+</body>
+</html>

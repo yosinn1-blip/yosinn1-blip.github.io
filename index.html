@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="data:,">
   <title>Yoshiki – Software Projects</title>
   <style>
     :root {
@@ -48,6 +49,12 @@
       margin-top: 8px;
       font-size: 1rem;
     }
+    header p.summary {
+      max-width: 680px;
+      margin: 16px auto 0;
+      color: var(--text);
+      font-size: 0.95rem;
+    }
     header a.github-link {
       display: inline-block;
       margin-top: 16px;
@@ -70,6 +77,45 @@
       width: 100%;
       margin: 0 auto;
       padding: 0 24px 64px;
+    }
+
+    .workflow {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+    .workflow h2 {
+      font-size: 1.125rem;
+      margin-bottom: 8px;
+    }
+    .workflow p {
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+    .workflow ol {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      list-style: none;
+      margin-top: 16px;
+      counter-reset: workflow;
+    }
+    .workflow li {
+      counter-increment: workflow;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 12px;
+      font-size: 0.85rem;
+    }
+    .workflow li::before {
+      content: counter(workflow);
+      display: block;
+      color: var(--accent);
+      font-weight: 700;
+      margin-bottom: 4px;
     }
 
     .grid {
@@ -107,6 +153,13 @@
       flex: 1;
     }
 
+    .evidence {
+      color: var(--text) !important;
+      font-size: 0.8rem !important;
+      padding-top: 10px;
+      border-top: 1px solid var(--border);
+    }
+
     .tags {
       display: flex;
       flex-wrap: wrap;
@@ -139,6 +192,7 @@
 
     @media (max-width: 480px) {
       .grid { grid-template-columns: 1fr; }
+      .workflow ol { grid-template-columns: 1fr; }
       header h1 { font-size: 1.5rem; }
     }
   </style>
@@ -147,16 +201,30 @@
 
 <header>
   <h1>Yoshiki</h1>
-  <p class="tagline">Mac apps &amp; browser extensions</p>
+  <p class="tagline">AI-assisted product development</p>
+  <p class="summary">自分の困り事を起点に、Macアプリ、Chrome拡張、Webアプリを個人開発しています。生成AIを調査・実装・テストに活用し、出力は実画面、自動テスト、ログ、元資料で確認してから採用します。</p>
   <a href="https://github.com/yosinn1-blip" class="github-link">GitHub @yosinn1-blip</a>
 </header>
 
 <main>
+  <section class="workflow" aria-labelledby="workflow-title">
+    <h2 id="workflow-title">AI駆動開発の進め方</h2>
+    <p>AIに任せきりにせず、問題の定義と最終判断を人が持つ進め方です。</p>
+    <ol>
+      <li>困り事と完成条件を整理</li>
+      <li>AIで調査・実装・比較</li>
+      <li>実画面とテストで検証</li>
+      <li>違和感を修正して再確認</li>
+    </ol>
+    <p><a class="card-link" href="ai-development-case-study.html">AI開発ケーススタディ →</a></p>
+  </section>
+
   <div class="grid">
 
     <article class="card">
       <h2>API音声ソフト</h2>
-      <p>Mac向け高速音声入力アプリ。Groq Whisper でAIの入力欄に Fn+Enter 一発で貼り付け送信。アカウント不要、APIキーはKeychainに保存。</p>
+      <p>既存の音声入力アプリの無料枠と操作感が合わなかったために作ったMac向け音声入力アプリ。FnとEnterでAIの入力欄へ素早く貼り付け・送信できます。</p>
+      <p class="evidence">確認方法: Swiftの自動テスト、配布用パッケージ、実機での入力フロー</p>
       <div class="tags">
         <span class="tag">Mac App</span>
         <span class="tag">Swift</span>
@@ -165,19 +233,19 @@
     </article>
 
     <article class="card">
-      <h2>Sakura Score</h2>
-      <p>サイトのレビュー品質を自動スコアリングするChrome拡張 + サービス。Supabase + Cloudflare Workers で動作。</p>
+      <h2>Sakura Score Viewer</h2>
+      <p>Amazonの商品ページから別サイトへ移動する手間を減らすため、第三者サービスの参考スコアを商品ページ内に表示するChrome拡張。スコアは購入判断の補助として扱います。</p>
+      <p class="evidence">関連する開発での学び: API費用の想定外の増加を経験し、利用量制御・キャッシュ・監視・テストの重要性を確認</p>
       <div class="tags">
         <span class="tag">Chrome拡張</span>
-        <span class="tag">Cloudflare Workers</span>
-        <span class="tag">Supabase</span>
+        <span class="tag">JavaScript</span>
       </div>
       <a class="card-link" href="https://github.com/yosinn1-blip/sakura-score-viewer">GitHub →</a>
     </article>
 
     <article class="card">
       <h2>Subscription Guard</h2>
-      <p>サブスクリプションの管理・自動更新を監視・保護するツール。</p>
+      <p>サブスクリプションの管理と自動更新の見落としを減らすためのWebツール。</p>
       <div class="tags">
         <span class="tag">Web App</span>
         <span class="tag">TypeScript</span>
@@ -186,13 +254,14 @@
     </article>
 
     <article class="card">
-      <h2>amaz</h2>
-      <p>Amazon の Checkout UI・Prime バッジ・配送オプション表示を整理・改善するChrome拡張。</p>
+      <h2>Amazon購入ガード</h2>
+      <p>Amazonの商品・購入画面で、必要な情報を残しながら不要な表示を減らし、情報を確認しやすくするChrome拡張。</p>
+      <p class="evidence">改善方法: 実際に使い、表示崩れや見落としを確認し、修正と再確認を反復</p>
       <div class="tags">
         <span class="tag">Chrome拡張</span>
         <span class="tag">TypeScript</span>
       </div>
-      <a class="card-link" href="https://github.com/yosinn1-blip/amaz">GitHub →</a>
+      <a class="card-link" href="https://chromewebstore.google.com/detail/amazon%E8%B3%BC%E5%85%A5%E3%82%AC%E3%83%BC%E3%83%89/hgghdgogjbdapbaackkenneofjcnliec">Chrome ウェブストア →</a>
     </article>
 
   </div>
