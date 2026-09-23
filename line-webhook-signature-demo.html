@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="data:,">
+  <title>LINE Webhook署名の検証デモ – Yoshiki</title>
+  <style>
+    :root { --bg:#f0f4f8; --surface:#fff; --border:#d0d7de; --text:#1f2328; --muted:#656d76; --accent:#0969da; --ok:#1a7f37; --bad:#cf222e; }
+    * { box-sizing:border-box; }
+    body { margin:0; background:var(--bg); color:var(--text); font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif; line-height:1.75; }
+    main { width:min(860px,calc(100% - 32px)); margin:40px auto; }
+    header, section { background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:24px; margin-bottom:16px; }
+    h1 { margin:0 0 8px; font-size:clamp(1.4rem,4vw,1.9rem); }
+    h2 { margin:0 0 8px; font-size:1.15rem; }
+    p, li, label { font-size:.95rem; }
+    .lead, .note { color:var(--muted); }
+    a { color:var(--accent); }
+    .back { display:inline-block; margin-bottom:16px; }
+    textarea, input[type="password"], input[type="text"] { width:100%; font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:.85rem; padding:10px 12px; border:1px solid var(--border); border-radius:6px; }
+    textarea { min-height:120px; resize:vertical; }
+    button { margin-top:12px; padding:8px 16px; border:0; border-radius:6px; background:var(--accent); color:#fff; cursor:pointer; }
+    #out { margin-top:14px; padding:12px; border-radius:6px; border:1px solid var(--border); background:#f6f8fa; white-space:pre-wrap; word-break:break-all; }
+    #out.ok { color:var(--ok); border-color:var(--ok); }
+    #out.bad { color:var(--bad); border-color:var(--bad); }
+    code { font-family:ui-monospace,SFMono-Regular,Menlo,monospace; }
+  </style>
+</head>
+<body>
+<main>
+  <a class="back" href="index.html">← ポートフォリオへ戻る</a>
+  <header>
+    <h1>LINE Webhook署名の検証デモ</h1>
+    <p class="lead">Messaging API の Webhook は、リクエストボディをチャネルシークレットで HMAC-SHA256 し、Base64 した値が <code>x-line-signature</code> と一致するかで真正性を見ます。計算はブラウザ内だけ（送信なし）。</p>
+  </header>
+
+  <section>
+    <label for="secret">チャネルシークレット（この端末内のみ）</label>
+    <p><input id="secret" type="password" autocomplete="off" placeholder="Channel secret" /></p>
+    <label for="body">Webhook の生ボディ（JSON文字列そのまま）</label>
+    <p><textarea id="body" spellcheck="false" placeholder='{"destination":"...","events":[]}'></textarea></p>
+    <label for="sig">x-line-signature（任意・照合する場合）</label>
+    <p><input id="sig" type="text" autocomplete="off" placeholder="Base64 署名" /></p>
+    <button type="button" id="run">署名を計算</button>
+    <div id="out" role="status">未計算</div>
+  </section>
+
+  <section>
+    <h2>できること / できないこと</h2>
+    <ul>
+      <li><strong>できる:</strong> 署名の計算と、入力した署名との一致確認（学習・実装確認用）</li>
+      <li><strong>できない:</strong> 実際の LINE への送信、友達追加、本番ボットの運用</li>
+    </ul>
+    <p class="note">シークレットを他人と共有しないでください。ページはサーバーへ値を送りません。</p>
+  </section>
+
+  <section>
+    <h2>なぜ公開しているか</h2>
+    <p>ECや店舗の「注文・予約をLINEへ通知」系は需要がありますが、Webhook署名を落とすとすぐ破綻します。Shopify／自動化案件と同じ「手間の証明」として、検証デモを公開しています。</p>
+  </section>
+</main>
+<script>
+(function () {
+  const enc = new TextEncoder();
+
+  async function hmacSha256Base64(secret, body) {
+    const key = await crypto.subtle.importKey(
+      "raw",
+      enc.encode(secret),
+      { name: "HMAC", hash: "SHA-256" },
+      false,
+      ["sign"]
+    );
+    const sig = await crypto.subtle.sign("HMAC", key, enc.encode(body));
+    const bytes = new Uint8Array(sig);
+    let bin = "";
+    for (let i = 0; i < bytes.length; i++) bin += String.fromCharCode(bytes[i]);
+    return btoa(bin);
+  }
+
+  document.getElementById("run").addEventListener("click", async function () {
+    const out = document.getElementById("out");
+    const secret = document.getElementById("secret").value;
+    const body = document.getElementById("body").value;
+    const expected = document.getElementById("sig").value.trim();
+    if (!secret || !body) {
+      out.className = "bad";
+      out.textContent = "シークレットとボディを入れてください。";
+      return;
+    }
+    try {
+      const calculated = await hmacSha256Base64(secret, body);
+      if (!expected) {
+        out.className = "ok";
+        out.textContent = "計算結果（x-line-signature）:\n" + calculated;
+        return;
+      }
+      const match = calculated === expected;
+      out.className = match ? "ok" : "bad";
+      out.textContent =
+        (match ? "一致しました" : "一致しません") +
+        "\n計算: " +
+        calculated +
+        "\n入力: " +
+        expected;
+    } catch (e) {
+      out.className = "bad";
+      out.textContent = "計算に失敗しました。";
+    }
+  });
+})();
+</script>
+</body>
+</html>

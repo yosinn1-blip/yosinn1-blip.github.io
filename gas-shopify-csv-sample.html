@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="data:,">
+  <title>GAS×Shopify CSV サンプル – Yoshiki</title>
+  <style>
+    :root { --bg:#f0f4f8; --surface:#fff; --border:#d0d7de; --text:#1f2328; --muted:#656d76; --accent:#0969da; }
+    * { box-sizing:border-box; }
+    body { margin:0; background:var(--bg); color:var(--text); font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif; line-height:1.75; }
+    main { width:min(860px,calc(100% - 32px)); margin:40px auto; }
+    header, section { background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:24px; margin-bottom:16px; }
+    h1 { margin:0 0 8px; font-size:clamp(1.4rem,4vw,1.9rem); }
+    h2 { margin:0 0 8px; font-size:1.15rem; }
+    p, li { font-size:.95rem; }
+    .lead, .note { color:var(--muted); }
+    a { color:var(--accent); }
+    .back { display:inline-block; margin-bottom:16px; }
+    pre { overflow:auto; background:#f6f8fa; border:1px solid var(--border); border-radius:6px; padding:14px; font-size:.82rem; }
+    code { font-family:ui-monospace,SFMono-Regular,Menlo,monospace; }
+  </style>
+</head>
+<body>
+<main>
+  <a class="back" href="index.html">← ポートフォリオへ戻る</a>
+  <header>
+    <h1>GAS×スプレッドシート → Shopify CSV</h1>
+    <p class="lead">Google Apps Script で、シートの商品行を Shopify の商品CSV（最小列）に書き出す公開サンプルです。EC案件でよく出る「表計算から一括取込」の手間を、固定範囲で見せます。</p>
+  </header>
+
+  <section>
+    <h2>できること</h2>
+    <ul>
+      <li>シート1行目のヘッダー（handle / title / body_html / vendor / type / tags / price / sku）を読む</li>
+      <li>Shopify 商品CSVの代表列へ変換してダウンロード</li>
+      <li>handle が空なら title から簡易スラッグを作る</li>
+    </ul>
+    <p class="note">在庫連携・画像・多言語・バリエーション複雑系は入れていません。追加は見積範囲です。</p>
+  </section>
+
+  <section>
+    <h2>使い方</h2>
+    <ol>
+      <li>新しいスプレッドシートを開き、上記ヘッダーと数行のデータを入れる</li>
+      <li>拡張機能 → Apps Script に <a href="samples/shopify-csv-from-sheet.gs"><code>shopify-csv-from-sheet.gs</code></a> を貼る</li>
+      <li>保存してシートを再読み込みし、メニュー「Shopify CSV」→「書き出し」</li>
+      <li>Shopify 管理画面の商品インポートで、まず少数行だけ試す</li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>ソース</h2>
+    <p><a href="samples/shopify-csv-from-sheet.gs">samples/shopify-csv-from-sheet.gs を開く</a></p>
+    <p><a href="shopify-app-case-study.html">Shopify埋め込みアプリのケーススタディ →</a></p>
+  </section>
+</main>
+</body>
+</html>
