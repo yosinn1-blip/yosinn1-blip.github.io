@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="data:,">
+  <title>Shopify埋め込みアプリのケーススタディ – Yoshiki</title>
+  <style>
+    :root { --bg:#f0f4f8; --surface:#fff; --border:#d0d7de; --text:#1f2328; --muted:#656d76; --accent:#0969da; }
+    * { box-sizing:border-box; }
+    body { margin:0; background:var(--bg); color:var(--text); font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif; line-height:1.75; }
+    main { width:min(860px,calc(100% - 32px)); margin:40px auto; }
+    header, section { background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:24px; margin-bottom:16px; }
+    h1 { margin:0 0 8px; font-size:clamp(1.6rem,4vw,2.1rem); }
+    h2 { margin:0 0 8px; font-size:1.25rem; }
+    p, li { font-size:.95rem; }
+    .lead { color:var(--muted); margin:0; }
+    a { color:var(--accent); }
+    a:focus { outline:2px solid var(--accent); outline-offset:2px; }
+    .back { display:inline-block; margin-bottom:16px; }
+    .note { color:var(--muted); font-size:.9rem; }
+    @media (max-width:520px) { main { margin:20px auto; } header, section { padding:18px; } h1 { font-size:1.3rem; } }
+  </style>
+</head>
+<body>
+<main>
+  <a class="back" href="index.html">← ポートフォリオへ戻る</a>
+  <header>
+    <h1>Shopify埋め込みアプリのケーススタディ</h1>
+    <p class="lead">日本向けの埋め込みアプリを、認証・審査資料・本番デプロイまで自分で進めた記録です。App Storeの最終公開は審査結果待ちのため、「ストア公開済み」とは書いていません。</p>
+  </header>
+
+  <section>
+    <h2>なぜこの領域か</h2>
+    <p>ホームページ制作や記事作成より、埋め込み認証・審査手順・日本語の法令寄りの要件が重なると、対応できる人が減ります。案件応募でも、この手間の証明があると差別化しやすいです。</p>
+  </section>
+
+  <section>
+    <h2>JP AdCheck</h2>
+    <ul>
+      <li><strong>課題:</strong> 日本語の商品タイトル・説明文を、薬機法・景品表示法・健康増進法の公開ガイドラインと照合して指摘したい</li>
+      <li><strong>実装:</strong> Shopify埋め込みアプリ（session token / App Bridge）、スキャン結果画面、設定画面、自動テスト、Cloudflare Pages へのデプロイ</li>
+      <li><strong>審査向けに自分が揃えたもの:</strong> 英語のレビュー手順、Cookie制限下の確認、フレッシュインストール検証、スクリーキャスト</li>
+      <li><strong>いまの状態:</strong> Partner へ再提出済み（審査中）。デモ環境と動画は公開</li>
+    </ul>
+    <p><a href="https://jp-ad-check-app.pages.dev/screencast-review-2026-09-16.mp4">審査用デモ動画を見る</a></p>
+  </section>
+
+  <section>
+    <h2>JP Invoice</h2>
+    <ul>
+      <li><strong>課題:</strong> 適格請求書（インボイス）向けのPDFを Shopify から出せるようにする</li>
+      <li><strong>実装:</strong> 埋め込み認証、課金確認、PDF出力まわり、Cloudflare Pages 本番</li>
+      <li><strong>審査対応の一例:</strong> App Bridge の復帰 HTML が React Router のエラー応答に包まれると script が動かない問題を切り分け、ErrorBoundary 側で script を注入して復帰できるようにした</li>
+      <li><strong>いまの状態:</strong> 再提出は審査一時停止の都合で 2026-10-23 以降。デモ環境は公開</li>
+    </ul>
+    <p><a href="https://jp-invoice-app.pages.dev">デモ環境を見る</a></p>
+  </section>
+
+  <section>
+    <h2>応募・相談で言えること / 言わないこと</h2>
+    <ul>
+      <li><strong>言える:</strong> 埋め込みアプリの実装、審査資料の整備、日本語ストア向けの機能、固定範囲での改修</li>
+      <li><strong>言わない:</strong> App Store 公開済み、承認保証、無制限の追加改修</li>
+    </ul>
+    <p class="note">関連サービス: <a href="https://coconala.com/services/4415228">ココナラ Shopify専用</a></p>
+  </section>
+</main>
+</body>
+</html>
