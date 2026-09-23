@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="data:,">
+  <title>インボイス登録番号の形式チェック – Yoshiki</title>
+  <style>
+    :root { --bg:#f0f4f8; --surface:#fff; --border:#d0d7de; --text:#1f2328; --muted:#656d76; --accent:#0969da; --ok:#1a7f37; --bad:#cf222e; }
+    * { box-sizing:border-box; }
+    body { margin:0; background:var(--bg); color:var(--text); font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif; line-height:1.75; }
+    main { width:min(720px,calc(100% - 32px)); margin:40px auto; }
+    header, section { background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:24px; margin-bottom:16px; }
+    h1 { margin:0 0 8px; font-size:clamp(1.4rem,4vw,1.9rem); }
+    h2 { margin:0 0 8px; font-size:1.15rem; }
+    p, li, label { font-size:.95rem; }
+    .lead, .note { color:var(--muted); }
+    a { color:var(--accent); }
+    .back { display:inline-block; margin-bottom:16px; }
+    input[type="text"] { width:100%; max-width:420px; font-size:1.1rem; letter-spacing:.04em; padding:10px 12px; border:1px solid var(--border); border-radius:6px; }
+    button { margin-top:12px; margin-right:8px; padding:8px 16px; border:0; border-radius:6px; background:var(--accent); color:#fff; font-size:.95rem; cursor:pointer; }
+    button.secondary { background:#fff; color:var(--text); border:1px solid var(--border); }
+    #result { margin-top:16px; padding:12px 14px; border-radius:6px; border:1px solid var(--border); background:#f6f8fa; white-space:pre-wrap; }
+    #result.ok { border-color:var(--ok); color:var(--ok); }
+    #result.bad { border-color:var(--bad); color:var(--bad); }
+    code { font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:.9em; }
+  </style>
+</head>
+<body>
+<main>
+  <a class="back" href="index.html">← ポートフォリオへ戻る</a>
+  <header>
+    <h1>インボイス登録番号の形式チェック</h1>
+    <p class="lead">適格請求書発行事業者の登録番号（<code>T</code>＋数字13桁）の形式を、その場で確認する小さなツールです。実在確認や税務判断は行いません。</p>
+  </header>
+
+  <section>
+    <label for="reg">登録番号</label>
+    <p>
+      <input id="reg" type="text" inputmode="text" autocomplete="off" spellcheck="false" placeholder="例: T1234567890123" maxlength="20" />
+    </p>
+    <button type="button" id="check">形式を確認</button>
+    <button type="button" class="secondary" id="clear">クリア</button>
+    <div id="result" role="status" aria-live="polite">未入力</div>
+  </section>
+
+  <section>
+    <h2>できること / できないこと</h2>
+    <ul>
+      <li><strong>できる:</strong> <code>T</code>＋半角数字13桁かどうか、法人番号と同じ並びならチェックデジットの整合</li>
+      <li><strong>できない:</strong> 国税庁への実在確認、登録の有効／取消の判定、税務アドバイス</li>
+    </ul>
+    <p class="note">実在確認は <a href="https://www.invoice-kohyo.nta.go.jp/" rel="noopener">国税庁の適格請求書発行事業者公表サイト</a>（Tを除く13桁）で行ってください。個人事業者などの番号は、法人番号と同じチェックデジット式が当てはまらない場合があります。</p>
+  </section>
+
+  <section>
+    <h2>なぜ公開しているか</h2>
+    <p>日本の EC／請求まわりでは、登録番号の入力ミスや形式確認がよく出ます。Shopify のインボイス系機能を作る過程で必要になった、小さな公開デモです。</p>
+    <p><a href="shopify-app-case-study.html">Shopify埋め込みアプリのケーススタディ →</a></p>
+  </section>
+</main>
+<script>
+(function () {
+  const input = document.getElementById("reg");
+  const result = document.getElementById("result");
+
+  function normalize(raw) {
+    return String(raw || "")
+      .trim()
+      .replace(/[Ｔｔ]/g, "T")
+      .replace(/[\s　\-ー−]/g, "")
+      .toUpperCase();
+  }
+
+  // 国税庁「法人番号」チェックデジット（検査用数字1桁 + 基礎12桁）
+  function corporateCheckDigitOk(digits13) {
+    if (!/^\d{13}$/.test(digits13)) return false;
+    const check = Number(digits13[0]);
+    const base = digits13.slice(1);
+    let sum = 0;
+    // 最下位（右端）から1桁目。奇数桁×1、偶数桁×2。検査用数字 = 9 − (合計 mod 9)
+    for (let n = 1; n <= 12; n++) {
+      const digit = Number(base[12 - n]);
+      const weight = n % 2 === 1 ? 1 : 2;
+      sum += digit * weight;
+    }
+    const expected = 9 - (sum % 9);
+    return check === expected;
+  }
+
+  function evaluate(raw) {
+    const value = normalize(raw);
+    if (!value) {
+      return { ok: null, text: "未入力" };
+    }
+    if (!/^T\d{13}$/.test(value)) {
+      return {
+        ok: false,
+        text: "形式エラー\n期待: 先頭が半角の T、続けて数字ちょうど13桁\n入力: " + value
+      };
+    }
+    const digits = value.slice(1);
+    const cdOk = corporateCheckDigitOk(digits);
+    if (cdOk) {
+      return {
+        ok: true,
+        text:
+          "形式OK（T＋13桁）\nチェックデジット: 法人番号と同じ計算と一致\n※実在確認ではありません。公表サイトで確認してください。"
+      };
+    }
+    return {
+      ok: true,
+      text:
+        "形式OK（T＋13桁）\nチェックデジット: 法人番号式とは一致しません（個人事業者などの番号の可能性があります）\n※実在確認ではありません。公表サイトで確認してください。"
+    };
+  }
+
+  function render() {
+    const { ok, text } = evaluate(input.value);
+    result.textContent = text;
+    result.className = ok === true ? "ok" : ok === false ? "bad" : "";
+  }
+
+  document.getElementById("check").addEventListener("click", render);
+  document.getElementById("clear").addEventListener("click", function () {
+    input.value = "";
+    render();
+    input.focus();
+  });
+  input.addEventListener("keydown", function (e) {
+    if (e.key === "Enter") render();
+  });
+  render();
+})();
+</script>
+</body>
+</html>
